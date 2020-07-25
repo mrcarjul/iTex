@@ -17,7 +17,7 @@ const create = (baseURL = API_URL) => {
    * @param {number} employeeId
    */
   const getEmployeeData = (employeeId) =>
-    api.post(`/simpleExerciseTest?id=${employeeId}`);
+    api.get(`/simpleExerciseTest?id=${employeeId}`);
 
   return {
     getEmployeeData,
