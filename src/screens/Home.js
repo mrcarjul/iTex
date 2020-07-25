@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 // Core
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import {
   Body,
   Button,
@@ -11,19 +11,25 @@ import {
   Input,
   Left,
   Right,
+  Row,
+  Col,
   Spinner,
   Title,
 } from 'native-base';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 // Personalized components
 import Item from '../components/Item';
+
+// Personalized Hooks
+import {useDebouncedCallBack} from '../hooks';
 
 // Themes
 import {colors} from '../themes';
 
 // Redux
 import {useDispatch, useSelector} from 'react-redux';
-import {requestEmployeeData} from '../redux/actions/employee';
+import {requestEmployeeData, setEmployeeData} from '../redux/actions/employee';
 
 function Home() {
   const [employeeId, setEmployeeId] = useState('');
@@ -31,11 +37,22 @@ function Home() {
   const dispatch = useDispatch();
 
   const onChangeText = (text) => {
-    setEmployeeId(text);
+    setEmployeeId(text.replace(/\D/g, ''));
   };
 
-  const onPress = () => {
+  const onRequestEmployeeData = () => {
+    if (employeeId === '') {
+      Alert.alert('Error', 'Please add an employee code');
+      return;
+    }
     dispatch(requestEmployeeData(employeeId));
+  };
+
+  const [onPress] = useDebouncedCallBack(onRequestEmployeeData, 100);
+
+  const onClearData = () => {
+    setEmployeeId('');
+    dispatch(setEmployeeData(null));
   };
 
   return (
@@ -52,13 +69,38 @@ function Home() {
           <Text style={styles.topText} success>
             Enter your employee code:
           </Text>
-          <Input value={employeeId} style={styles.input} {...{onChangeText}} />
+          <Row style={styles.alignCenter}>
+            <Col size={3}>
+              <Input
+                value={employeeId}
+                style={styles.input}
+                {...{onChangeText}}
+              />
+            </Col>
+            <Col>
+              <Button
+                iconRight
+                danger
+                full
+                style={styles.margin}
+                onPress={onClearData}>
+                <Text style={styles.buttonText}>Clear</Text>
+                <AntDesign name="close" size={25} color={colors.white} />
+              </Button>
+            </Col>
+          </Row>
           <View style={styles.centerContents}>
             {employeeId != '' ? (
-              <Text style={styles.greetText}>Hello!, {employeeId}</Text>
+              <Text style={styles.greetText}>
+                Hello!, employee {employeeId}
+              </Text>
             ) : null}
           </View>
-          <Button {...{onPress}} style={styles.button} block>
+          <Button
+            {...{onPress}}
+            style={styles.button}
+            block
+            disabled={fetching}>
             <Text style={styles.buttonText} small primary>
               Check Data
             </Text>
@@ -80,6 +122,9 @@ function Home() {
 }
 
 const styles = StyleSheet.create({
+  alignCenter: {
+    alignItems: 'center',
+  },
   button: {
     marginHorizontal: 10,
     marginVertical: 10,
@@ -98,6 +143,12 @@ const styles = StyleSheet.create({
   input: {
     borderColor: 'gray',
     borderWidth: StyleSheet.hairlineWidth,
+  },
+  margin: {
+    marginLeft: 5,
+  },
+  row: {
+    flexDirection: 'row',
   },
   topContainer: {
     flex: 1,
