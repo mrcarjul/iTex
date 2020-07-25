@@ -1,3 +1,4 @@
 import useDebouncedCallBack from './useDebouncedCallBack';
+import usePrevious from './usePrevious';
 
-export {useDebouncedCallBack};
+export {useDebouncedCallBack, usePrevious};
