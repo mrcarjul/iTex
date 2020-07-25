@@ -12,5 +12,5 @@ export default function configureStore() {
 
   const store = createStore(reducer, enhancer);
 
-  return {store, persistor};
+  return store;
 }
