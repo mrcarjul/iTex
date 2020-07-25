@@ -5,7 +5,7 @@ export const REQUEST_EMPLOYEE_DATA_FAILURE = 'REQUEST_EMPLOYEE_DATA_FAILURE';
 export const SET_EMPLOYEE_DATA = 'SET_EMPLOYEE_DATA';
 
 export const requestData = () => ({type: REQUEST_EMPLOYEE_DATA});
-export const requestDataFailure = () => ({type: REQUEST_EMPLOYEE_DATA});
+export const requestDataFailure = () => ({type: REQUEST_EMPLOYEE_DATA_FAILURE});
 export const setEmployeeData = (payload) => ({
   type: SET_EMPLOYEE_DATA,
   payload,

@@ -31,6 +31,7 @@ export default function employee(state = initialState, action) {
     case REQUEST_EMPLOYEE_DATA_FAILURE:
       return {
         ...state,
+        payload: null,
         fetching: false,
         error: true,
         errorMsg: action.errorMsg,
