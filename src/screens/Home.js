@@ -15,7 +15,7 @@ import {
 } from 'native-base';
 
 // Themes
-import {colors} from './src/themes';
+import {colors} from '../themes';
 
 
 function Home() {
