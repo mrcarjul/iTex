@@ -1,28 +1,23 @@
 import React from 'react';
 
 // Core
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 // Personalized components
 import ItemText from './ItemText';
 
+// Thems
+import {colors} from '../themes';
+
 /**
  * @description Item to be rendered at the list
- * @returns list item if shouldDisplay prop comes with a thruty value 
+ * @returns list item if shouldDisplay prop comes with a thruty value
  */
-function Item({
-  id,
-  date,
-  type,
-  status,
-  shouldDisplayStatus,
-  shouldDisplay,
-  registryInternalKey,
-}) {
+function Item({id, date, type, status, shouldDisplayStatus, shouldDisplay}) {
   if (!shouldDisplay) return null;
   return (
-    <View key={registryInternalKey} style={styles.item}>
+    <View style={styles.item}>
       <View style={styles.centerContents}>
         <Text style={styles.itemIdText}>{id}</Text>
       </View>
