@@ -7,9 +7,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 // Personalized components
 import ItemText from './ItemText';
 
-// Themes
-import {genericStyles} from '../themes';
-
 /**
  * @description Item to be rendered at the list
  * @returns list item if shouldDisplay prop comes with a thruty value 
@@ -27,7 +24,7 @@ function Item({
   return (
     <View key={registryInternalKey} style={styles.item}>
       <View style={styles.centerContents}>
-        <Text style={[styles.itemIdText, genericStyles.boldText]}>{id}</Text>
+        <Text style={styles.itemIdText}>{id}</Text>
       </View>
       <View style={styles.itemCenterContainer}>
         <ItemText title="Date" content={date} />
