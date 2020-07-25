@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 // Core
 import {Alert, StyleSheet, Text, View} from 'react-native';
@@ -22,7 +22,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Item from '../components/Item';
 
 // Personalized Hooks
-import {useDebouncedCallBack} from '../hooks';
+import {useDebouncedCallBack, usePrevious} from '../hooks';
 
 // Themes
 import {colors} from '../themes';
@@ -34,7 +34,14 @@ import {requestEmployeeData, setEmployeeData} from '../redux/actions/employee';
 function Home() {
   const [employeeId, setEmployeeId] = useState('');
   const {fetching, payload} = useSelector((state) => state.employee);
+  const prevFetching = usePrevious(fetching);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (prevFetching && !fetching && !payload) {
+      Alert.alert('Error', 'No data found');
+    }
+  }, [prevFetching, fetching, payload]);
 
   const onChangeText = (text) => {
     setEmployeeId(text.replace(/\D/g, ''));
