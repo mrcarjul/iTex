@@ -23,6 +23,7 @@ export default function employee(state = initialState, action) {
     case SET_EMPLOYEE_DATA:
       return {
         ...state,
+        payload: action.payload,
         fetching: false,
         error: null,
         errorMsg: null,

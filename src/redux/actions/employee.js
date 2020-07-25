@@ -18,11 +18,12 @@ export const requestEmployeeData = (employeeId) => async (dispatch) => {
   try {
     await dispatch(requestData());
     const response = await API.getEmployeeData(employeeId);
-    if (response?.ok) {
-      await dispatch(setEmployeeData(response.data));
+    if (response?.ok && response?.data?.length > 0) {
+      await dispatch(setEmployeeData(response.data[0]));
+    } else if (response?.ok && response?.data?.length === 0) {
+      await dispatch(requestDataFailure('No data for given employee id'));
     } else {
       await dispatch(requestDataFailure(defaultErrorMsg));
-      return false;
     }
   } catch (error) {
     await dispatch(requestDataFailure(defaultErrorMsg));
