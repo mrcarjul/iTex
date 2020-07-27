@@ -1,5 +1,7 @@
 import React from 'react';
 
+// Core
+import { Platform } from 'react-native';
 import Home from './src/screens/Home';
 
 // External component
