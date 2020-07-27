@@ -31,6 +31,42 @@ import {colors} from '../themes';
 import {useDispatch, useSelector} from 'react-redux';
 import {requestEmployeeData, setEmployeeData} from '../redux/actions/employee';
 
+function TopContainer({employeeId, onChangeText, onClearData, onPress}) {
+  return (
+    <View style={styles.topContainer}>
+      <Text style={styles.topText} success>
+        Enter your employee code:
+      </Text>
+      <Row style={styles.alignCenter}>
+        <Col size={3}>
+          <Input value={employeeId} style={styles.input} {...{onChangeText}} />
+        </Col>
+        <Col>
+          <Button
+            iconRight
+            danger
+            full
+            style={styles.margin}
+            onPress={onClearData}>
+            <Text style={styles.buttonText}>Clear</Text>
+            <AntDesign name="close" size={25} color={colors.white} />
+          </Button>
+        </Col>
+      </Row>
+      <View style={styles.centerContents}>
+        {employeeId != '' ? (
+          <Text style={styles.greetText}>Hello!, employee {employeeId}</Text>
+        ) : null}
+      </View>
+      <Button {...{onPress}} style={styles.button} block disabled={fetching}>
+        <Text style={styles.buttonText} small primary>
+          Check Data
+        </Text>
+      </Button>
+    </View>
+  );
+}
+
 function Home() {
   const [employeeId, setEmployeeId] = useState('');
   const {fetching, payload} = useSelector((state) => state.employee);
@@ -72,57 +108,15 @@ function Home() {
         <Right />
       </Header>
       <Content padder>
-        <View style={styles.topContainer}>
-          <Text style={styles.topText} success>
-            Enter your employee code:
-          </Text>
-          <Row style={styles.alignCenter}>
-            <Col size={3}>
-              <Input
-                value={employeeId}
-                style={styles.input}
-                {...{onChangeText}}
-              />
-            </Col>
-            <Col>
-              <Button
-                iconRight
-                danger
-                full
-                style={styles.margin}
-                onPress={onClearData}>
-                <Text style={styles.buttonText}>Clear</Text>
-                <AntDesign name="close" size={25} color={colors.white} />
-              </Button>
-            </Col>
-          </Row>
-          <View style={styles.centerContents}>
-            {employeeId != '' ? (
-              <Text style={styles.greetText}>
-                Hello!, employee {employeeId}
-              </Text>
-            ) : null}
-          </View>
-          <Button
-            {...{onPress}}
-            style={styles.button}
-            block
-            disabled={fetching}>
-            <Text style={styles.buttonText} small primary>
-              Check Data
-            </Text>
-          </Button>
-        </View>
-        <View style={styles.bottomContainer}>
-          {fetching ? (
-            <Spinner color={colors.blue} />
-          ) : (
-            payload?.length > 0 &&
-            payload.map((item) => (
-              <Item key={item.registryInternalKey} {...item} />
-            ))
-          )}
-        </View>
+        <TopContainer {...{employeeId, onChangeText, onClearData, onPress}} />
+        {fetching ? (
+          <Spinner color={colors.blue} />
+        ) : (
+          payload?.length > 0 &&
+          payload.map((item) => (
+            <Item key={item.registryInternalKey} {...item} />
+          ))
+        )}
       </Content>
     </Container>
   );
@@ -148,7 +142,7 @@ const styles = StyleSheet.create({
     color: colors.lightGray,
   },
   input: {
-    borderColor: 'gray',
+    borderColor: colors.gray,
     borderWidth: StyleSheet.hairlineWidth,
   },
   margin: {
